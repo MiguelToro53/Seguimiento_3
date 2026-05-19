@@ -1,9 +1,4 @@
 """
-procesador.py
-=============
-Clase principal para cargar archivos DICOM, extraer metadatos,
-analizar intensidad de píxeles y procesar imágenes médicas con OpenCV.
-
 Integrantes:
     - Miguel Angel Toro
     - Stefania Concha Caceres
@@ -17,29 +12,16 @@ import cv2
 
 
 class ProcesadorDICOM:
-    """
-    Clase que encapsula toda la lógica para procesar archivos DICOM.
-
-    Atributos:
-        ruta      : carpeta donde están los archivos .dcm
-        archivos  : lista de datasets cargados con pydicom
-        dataframe : DataFrame con los metadatos extraídos
-    """
 
     def __init__(self, ruta):
         self.ruta = ruta
         self.archivos = []
         self.dataframe = None
 
-    # ------------------------------------------------------------------
     # 1. Carga de archivos
-    # ------------------------------------------------------------------
 
     def cargar_archivos(self):
-        """
-        Escanea la carpeta, carga todos los archivos DICOM válidos
-        y los guarda en self.archivos.
-        """
+
         encontrados = 0
         for nombre in os.listdir(self.ruta):
             ruta_archivo = os.path.join(self.ruta, nombre)
@@ -54,15 +36,10 @@ class ProcesadorDICOM:
 
         print(f"\n  Total cargados: {encontrados} archivo(s)\n")
 
-    # ------------------------------------------------------------------
+    
     # 2. Extracción de metadatos
-    # ------------------------------------------------------------------
 
     def extraer_metadatos(self):
-        """
-        Extrae los tags DICOM de cada archivo cargado y construye
-        un DataFrame donde cada fila es un archivo y cada columna un tag.
-        """
 
         def obtener_tag(dataset, tag):
             # Retorna el valor del tag o 'N/A' si no existe (anonimizado)
@@ -87,9 +64,9 @@ class ProcesadorDICOM:
         print(self.dataframe.to_string())
         print()
 
-    # ------------------------------------------------------------------
+    
     # 3. Análisis de intensidad con NumPy
-    # ------------------------------------------------------------------
+
 
     def analizar_intensidad(self):
         """
@@ -110,18 +87,12 @@ class ProcesadorDICOM:
         print(self.dataframe[["PatientID", "Modality", "IntensidadPromedio"]].to_string())
         print()
 
-    # ------------------------------------------------------------------
+    
     # 4. Procesamiento de imágenes con OpenCV
-    # ------------------------------------------------------------------
+    
 
     def procesar_imagenes(self, carpeta_salida="salida"):
-        """
-        Para cada imagen DICOM:
-          1. Normaliza a 8 bits (uint8)
-          2. Ecualiza el histograma para mejorar contraste
-          3. Detecta bordes con Canny
-          4. Guarda ambas imágenes procesadas en carpeta_salida
-        """
+        
         os.makedirs(carpeta_salida, exist_ok=True)
 
         for ds in self.archivos:

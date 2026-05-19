@@ -1,9 +1,4 @@
 """
-main.py
-=======
-Punto de entrada del sistema de procesamiento DICOM.
-Ejecutar con: python3 main.py
-
 Integrantes:
     - Miguel Angel Toro
     - Stefania Concha Caceres
